@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesen Teil 2</title>
+<style>
+  body {font-family: Arial, sans-serif; margin: 30px;}
+  .text-block {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .text-block h2 {
+    margin-top: 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+  }
+  .question {margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 6px;}
+  .question h3 {margin-top: 0;}
+  .answer-btn {display: block; margin: 6px 0; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #eee; cursor: pointer;}
+  .answer-btn.correct {background: #c6f6c6; border-color: #2a8a2a;}
+  .answer-btn.wrong {background: #ffdddd; border-color: #b30000;}
+</style>
+</head>
+<body>
+<h1>Вікторина</h1>
+<div id="quiz"></div>
+<script>
+const questions = [
+  {
+    blockTitle: 'Text 1 (вариант №1)',
+    blockText: `<p>Zugangskontrolle und Zeiterfassung
+    <p>Als Mitarbeiterinnen und Mitarbeiter erhalten Sie zu Beginn Ihres Arbeitsverhältnisses einen Firmenausweis mit Chip-Karte. Dieser berechtigt zum Zugang in das Unternehmensgebäude und dient gleichzeitig zur Erfassung der Arbeitszeit.</p>
+<p>Außerdem können Sie mit Ihrem Firmenausweis in der Kantine und am Getränkeautomaten bezahlen und das hauseigene Fitnessstudio benutzen.</p>
+<p>Neben den Aufzügen im Erdgeschoss finden Sie ein digitales Zeiterfassungsgerät. Bitte halten Sie beim Betreten und Verlassen des Gebäudes Ihren Firmenausweis an die blau markierte Fläche und vergewissern Sie sich, dass die Zeit des Arbeitsbeginns und Arbeitsendes richtig erfasst wurde. Dies erkennen Sie anhand der Anzeige des Geräts, die Ihnen Ihre monatliche Arbeitszeit anzeigt.</p>
+<p>Die Zeiterfassung berechnet automatisch die reguläre Arbeitszeit sowie eventuelle Über- als auch Minusstunden. Die Personalabteilung richtet Ihnen einen Zugang zu unserem Arbeitskontensystem PersoTime ein. Damit können Sie im Intranet Ihr Arbeitszeitkonto jederzeit einsehen.</p>`,
+    content: [
+      { text: `6. Der Firmenausweis hat neben der Arbeitszeiterfassung auch andere Funktionen.`, answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: `7. Überstunden`, answers: ["a) können online eingesehen werden.", "b) sind in der Firma grundsätzlich nicht erlaubt.", "c) werden von der Zeiterfassung nicht registriert."], correct: 0 },
+      { text: `6. NEU - Ein Firmenausweis kann innerhalb des Firmengebäudes als Zahlungsmittel verwendet werden. / Der Firmenausweis dient als firmeninternes Zahlungsmittel.`, answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: `7. NEU - Das persönliche Arbeitszeitkonto`, answers: ["a) ist nur über die Personalabteilung einsehbar.", "b) buchen die Mitarbeiter ihre Stunden selbst. / müssen die Mitarbeiter selbst anlegen.", "c) wird täglich aktualisiert."], correct: 2 }
+    ]
+  },
+  {
+    blockTitle: 'Text 1 (вариант №2) – 100%',
+    blockText: `<p>Arbeitszeit
+<p>In unserem Unternehmen arbeiten wir nach dem Gleitzeitsystem. Die Kernarbeitszeit ist Montag bis Freitag
+zwischen 9.00 Uhr und 15.30 Uhr. In dieser Zeit müssen alle Mitarbeitenden anwesend sein. Jede Abwesenheit
+während dieser Zeit muss genehmigt sein.
+<p>Die tägliche Rahmenarbeitszeit ist von 6.00 Uhr bis 19.30 Uhr. Bitte beachten Sie, dass innerhalb dieses
+Zeitrahmens maximal acht, in Ausnahmefällen zehn, Stunden täglich gearbeitet werden dürfen.
+Alle Mitarbeitenden müssen beim Betreten und Verlassen des Gebäudes mit der Zeiterfassungskarte am Lesegerät
+ein- und ausstechen. So wird die tägliche Arbeitszeit auf dem Zeitkonto festgehalten. Dieses kann jederzeit am
+Lesegerät eingesehen werden.
+<p>Bei entsprechendem Guthaben kann einmal pro Monat ein ganzer Arbeitstag (acht Stunden) als Gleitzeittag
+genommen werden. Zu berücksichtigen ist, dass ein Minuskontostand im Folgemonat auszugleichen ist. Zusätzlich
+können im Monat Dezember bis zu vier Arbeitstage als Gleitzeittage genommen werden, um sie zwischen
+Weihnachten und Neujahr zu nutzen, wenn das Arbeitszeitkonto ein ausreichendes Guthaben aufweist.`,
+    content: [
+      { text: 'Bel Gleitzeit können Mitarbeitende täglich beliebig viele Stunden arbeiten.', answers: ["Richtig", "Falsch"], correct: 1 },
+      { text: 'Durch Gleitzeit ist es den Mitarbeitenden möglich,', answers: ['a) ein Stundenguthaben aufzubauen.', 'b) jeden Monat einige Tage freizunehmen.', 'c) täglich mehr als acht Stunden zu arbeiten.'], correct: 0 }
+    ]
+  },
+  {
+    blockTitle: '<p>Text 1 (вариант №2) Новый вариант',
+    blockText: `<p>Arbeitszeit
+<p>Die wöchentliche Arbeitszeit beträgt 40 Stunden - bei einem Arbeitstag von acht Stunden, wobei die Pausen nicht
+mitgerechnet werden. Es gilt die Fünf-Tage-Woche. Betriebsbedingt ist es möglich, dass Sie bis zu zehn Stunden
+pro Tag arbeiten. Diese Mehrarbeit ist aber nur in Ausnahmefällen erlaubt und muss innerhalb von sechs Monaten
+durch entsprechend kürzerer Arbeitstage ausgeglichen werden.
+<p>Wir haben flexible Arbeitszeiten. Sie können selbst bestimmen, wann Sie morgens anfangen zu arbeiten und wann
+Sie aufhören. Zwischen 10 und 15 Uhr, in der sogenannten Kernzeit, müssen Sie jedoch anwesend sein. Gleitzeiten
+sind zwischen 8 und 10 Uhr und 15 und 17 Uhr. Innerhalb dieser Zeiten können Sie anfangen bzw. aufhören zu
+arbeiten. Aus betrieblichen Gründen kann der Arbeitgeber die Gleitzeit für eine gewisse Zeit aussetzen.
+<p>Unser elektronisches Zeiterfassungssystem registriert täglich die Zahl der von Ihnen geleisteten Arbeitsstunden auf
+Ihrem persönlichen Arbeitszeitkonto. Haben Sie in einer Woche mehr als 40 Stunden gearbeitet, sollten Ihre
+Überstunden bereits vor Monatsende durch weniger Arbeit abgebaut werden. Wenn ein Abbau nicht möglich ist,
+wird mit der Geschäftsführung eine rasche Lösung besprochen.`,
+    content: [
+      { text: 'Die Beschäftigten dürfen mit der Arbeit anfangen, wann sie wollen.', answers: ["Richtig", "Falsch"], correct: 1 },
+      { text: 'Ergibt sich auf einem Arbeitszeitkonto ein Plus,', answers: ['a) kann der Betrieb den Acht-Stunden-Tag verlängern oder verkürzen.', 'b) ist schnellstmöglich ein Ausgleich zu finden.', 'c) kann der Betrieb die Gleitzeitregelungen ändern.'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  },
+  {
+    blockTitle: 'Text 4 (шаблон)',
+    blockText: `<p>Вставте тут великий текст для четвертого блоку.</p>`,
+    content: [
+      { text: 'питання 1', answers: ["Richtig", "Falsch"], correct: 0 },
+      { text: 'питання 2', answers: ['відповідь1', 'відповідь2', 'відповідь3'], correct: 1 }
+    ]
+  }
+];
+
+const quizContainer = document.getElementById('quiz');
+
+let totalQuestions = 0;
+questions.forEach(b => totalQuestions += b.content.length);
+let answered = 0;
+let score = 0;
+
+const progressBar = document.createElement('h2');
+progressBar.id = 'progressBar';
+progressBar.style.margin = '20px 0';
+progressBar.textContent = `Прогрес: Блок 1 з ${questions.length}, Питання 1 з ${totalQuestions}`;
+document.body.insertBefore(progressBar, quizContainer);
+
+let globalQuestionIndex = 0;
+
+questions.forEach((block, blockIndex) => {
+  // блок тексту
+  const textDiv = document.createElement('div');
+  textDiv.className = 'text-block';
+  textDiv.innerHTML = `<h2>${block.blockTitle}</h2>` + block.blockText;
+  quizContainer.appendChild(textDiv);
+
+  // блок питань
+  block.content.forEach((q, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.innerHTML = `<h3>${q.text}</h3>`;
+
+    q.answers.forEach((ans, ai) => {
+      const btn = document.createElement('button');
+      btn.className = 'answer-btn';
+      btn.textContent = ans;
+      btn.addEventListener('click', () => {
+        const buttons = qDiv.querySelectorAll('.answer-btn');
+        if ([...buttons].some(b => b.disabled)) return;
+        buttons.forEach(b => b.disabled = true);
+
+        if (ai === q.correct) {
+          btn.classList.add('correct');
+          score++;
+        } else {
+          btn.classList.add('wrong');
+          buttons[q.correct].classList.add('correct');
+        }
+
+        answered++;
+        globalQuestionIndex++;
+        const currentBlock = Math.floor(globalQuestionIndex / questions[0].content.length) + 1;
+        document.getElementById('progressBar').textContent = `Прогрес: Блок ${currentBlock} з ${questions.length}, Питання ${answered + 1 > totalQuestions ? totalQuestions : answered + 1} з ${totalQuestions}`;
+
+        if (answered === totalQuestions) showResults();
+      });
+      qDiv.appendChild(btn);
+    });
+    quizContainer.appendChild(qDiv);
+  });
+});
+
+function showResults() {
+  const resDiv = document.getElementById('results');
+  resDiv.style.display = 'block';
+  resDiv.innerHTML = `<h2>Результат</h2><p>Ви дали правильних відповідей: <strong>${score} / ${totalQuestions}</strong></p>`;
+  document.getElementById('progressBar').textContent = 'Тест завершено!';
+}
+</script>
+<div id="results" style="display:none; margin-top:30px; padding:20px; border:2px solid #444; border-radius:8px; background:#eef;"></div>
+</body>
+</html>
